@@ -2,8 +2,11 @@ package com.example.conexionservicioweb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.*;
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     EditText txt;
     RequestQueue request;
     JsonObjectRequest jsonObjectRequest;
+    Button btnCrear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,19 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         txt = (EditText) findViewById(R.id.editTextTextPersonName);
         request = Volley.newRequestQueue(getApplicationContext());
-        String line = "https://serviciosdigitalesplus.com/catalogo.php?tipo=1&id=333";
+        String line = "https://serviciosdigitalesplus.com/catalogo.php?tipo=1&id=1001";
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, line, null, this, this);
         request.add(jsonObjectRequest);
+
+        btnCrear = (Button) findViewById(R.id.button2);
+        btnCrear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, CrearActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
