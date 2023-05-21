@@ -4,17 +4,52 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+import com.android.volley.VolleyError;
 
-    WebView webView;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
+
+    //WebView wv;
+
+    EditText txt;
+    RequestQueue request;
+    JsonObjectRequest jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl("https://serviciosdigitalesplus.com/cartas");
+        //wv = (WebView) findViewById(R.id.webView1);
+        //wv.loadUrl("https://serviciosdigitalesplus.com/cartas/");
+
+        txt = (EditText) findViewById(R.id.editTextTextPersonName);
+        request = Volley.newRequestQueue(getApplicationContext());
+        String line = "https://serviciosdigitalesplus.com/catalogo.php?tipo=1&id=333";
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, line, null, this, this);
+        request.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        System.out.print("------------------------------------");
+        System.out.print("------------------------------------");
+        System.out.print(error.toString());
+
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        JSONObject obj = response.optJSONObject("dato");
+        try{
+            txt.setText(obj.optString("nom"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
